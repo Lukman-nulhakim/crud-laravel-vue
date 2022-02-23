@@ -23,6 +23,7 @@
     "main": "index.js",
     "license": "MIT",
     "dependencies": {
+        "js-cookie": "^3.0.1",
         "router-link": "^0.0.4",
         "vue": "^2.6.14",
         "vue-axios": "^3.4.0",

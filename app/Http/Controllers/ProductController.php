@@ -36,8 +36,31 @@ class ProductController extends Controller
      */
     public function store(Request $request)
     {
-        $result = Products::create($request->all());
-        return response()->json($result);
+        try {
+            // $request->validate([
+            //     'name' => 'required',
+            //     'price' => 'required',
+            //     'description' => 'required',
+            //     'imageFile' => 'required|mimes:jpg,jpeg,png|max:2048',
+            //     'variant' => 'required'
+            // ]);
+
+            if ($request->file()) {
+                $imageName = time().'_'.$request->imageFile->getClientOriginalName();
+                $path = $request->file('imageFile')->storeAs('product-image', $imageName, 'public');
+
+                $result = Products::create([
+                    'name' => $request['name'],
+                    'price' => $request['price'],
+                    'description' => $request['description'],
+                    'image' => '/storage/'. $path,
+                    'variant' => $request['variant']
+                ]);
+            }
+            return response()->json($result);
+        } catch (\Throwable $th) {
+            return "error : " .$th->getMessage();
+        }
     }
 
     /**
@@ -74,8 +97,22 @@ class ProductController extends Controller
      */
     public function update(Request $request, $id)
     {
+        dd($request->all());
         if ($id) {
             $product = Products::find($id);
+            dd($request->all());
+            // if ($request->file()) {
+            //     $imageName = time().'_'.$request->imageFile->getClientOriginalName();
+            //     $path = $request->file('imageFile')->storeAs('product-image', $imageName, 'public');
+
+            //     $result = Products::create([
+            //         'name' => $request['name'],
+            //         'price' => $request['price'],
+            //         'description' => $request['description'],
+            //         'image' => '/storage/'. $path,
+            //         'variant' => $request['variant']
+            //     ]);
+            // }
             $result = $product->update($request->all());
             return response()->json($result);
         }

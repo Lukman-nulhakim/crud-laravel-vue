@@ -1,8 +1,8 @@
 <template>
     <div>
-        <Navbar />
-        <div class="container">
-            <router-view></router-view>
-        </div>
+        <!-- <Navbar /> -->
+        <!-- <div> -->
+        <router-view></router-view>
+        <!-- </div> -->
     </div>
 </template>
